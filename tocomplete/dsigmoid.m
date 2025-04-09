@@ -12,5 +12,7 @@
 %  sigmoid function to each element individually.
 
 function g = dsigmoid(z)
-%%% PLACE CODE HERE
+    g = sigmoid(z) .* ( 1 - sigmoid(z) );
 end
+%Different from what we learned.
+%We learned (1 - g(z)^2)
