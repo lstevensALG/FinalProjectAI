@@ -11,5 +11,5 @@
 %  each element individually.
 
 function g = sigmoid(z)
-%%% PLACE CODE HERE
+    g = 1 ./ ( 1 + exp(-z) );
 end
