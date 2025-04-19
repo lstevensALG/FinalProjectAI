@@ -22,10 +22,38 @@
 %  Each row stores the raw outputs while each column represents one neuron from
 %  the output layer.
 function Y = forward_propagation(X, W1, W2)
-
-% Get the total number of examples
-m = size(X,1);
-
+    
+    % Get the total number of examples
+    m = size(X,1);
+    
 %%%% PLACE CODE HERE
+%   First, we have to calculate X0
+%   We have to add a column of ones to X for bias.
+%   First column: Column of ones.
+%   Other columns: Whatever the hell has been put in X.
+%   We don't have to transpose like in class because I think input X is on
+%   its side (already transposed?)
+    X0 = [ ones(m, 1), X];
 
+%   Now, we have X0. We continue on by calculating S1.
+%   We just multiply X0 with W1.
+    S1 = X0 .* W1;
+
+%   Now, we have to calculate X1 from S1.
+%   This requires us to sigmoid function S1,
+%   Then, add a column of ones to act as a bias.
+    X1 = sigmoid(S1);
+    X1 = [ ones(m, 1), X1 ];
+
+%   Calculate S2 with X1
+    S2 = X1 .* W2;
+
+%   Calculate X2 from S2.
+%   This time, we just sigmoid function S2 and don't add bias because it's
+%   the last layer.
+    X2 = sigmoid(S2);
+
+%   We now have the final layer neuron results. Just assign X2 to Y for
+%   output.
+    Y = X2;
 end
