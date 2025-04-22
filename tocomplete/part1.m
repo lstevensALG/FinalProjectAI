@@ -52,6 +52,26 @@ alpha = 5;
 
 %%% 8. Implement Stochastic Gradient Descent
 %%% PLACE YOUR CODE HERE
+%Instructions seem to be implying that forward_propagation.m is never used.
+%I think epoch is an iteration.
+%As of writing this, epochs/iterations = 150.
+
+%looping an equal amount of times as epochs/iterations
+for aa = 1:1:1
+    %looping through each example in x (m is equal to num of rows in x)
+    for ab = 1:1:m
+        %Get 1 example
+        X0 = X(ab, :);
+        %Transpose the example. Instructions want this and in-class
+        %functions sorta want this. Strange that forwards_propagation.m did
+        %not want to do this.
+        X0 = transpose(X0);
+        %Adding bias to X0
+        X0 = [1; X0];
+        disp(X0);
+        %X0 Complete
+    end
+end
 
 %%% 9. Plot the XOR points as well as the decision regions
 %%% PLACE YOUR CODE HERE
