@@ -61,9 +61,12 @@ for i = 1:m
     X2 = sigmoid(S2);
     
     %Backwards propagation
-    y_actual = zeros( size(X2, 1), 1 );
-    y_actual( y(i, 1) ) = 1;
-    delta2 = (X2 - y_single) .* dsigmoid(S2);
+    y_actual = zeros( size(X2, 1), 1 );         %X2 has multiple rows, this is a zero array to match it
+    y_actual( y(i, 1) ) = 1;                    %Assigning 1 to the position of the class the example is supposed to predict
+    delta2 = (X2 - y_actual) .* dsigmoid(S2);
+    delta1 = dsigmoid(S1) .* ( W2(2:end) * delta2);
+
+    
 end
 %%% 6. Take the updates and pack the output parameter vector
 grad = zeros(numel(weights),1);
