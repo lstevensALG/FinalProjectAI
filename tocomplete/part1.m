@@ -128,11 +128,13 @@ for epoch = 1:k
         W2 = W2 - alpha * grad_W2;       % (3x1)
 
         %%% Accumulate cost for this epoch
-        cost = cost + ( -(y_single * log(X2) + (1 - y_single) * log(1 - X2)) );
+        %Formula that lab wants on page 7
+        costs(epoch) = (1 / (2 * m) ) * sqrt( (X2 - y_single)^2 );
+        %cost = cost + ( -(y_single * log(X2) + (1 - y_single) * log(1 - X2)) );
     end
     
     % Average cost per example this epoch
-    costs(epoch) = cost / m;
+    %costs(epoch) = cost / m;
 end
 
 
