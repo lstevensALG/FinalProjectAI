@@ -44,7 +44,27 @@ W2_update = zeros(size(W2));
 
 %%% 5. Compute total cost and gradient update matrices
 %%% PLACE YOUR CODE HERE
+%X: each row is an example. Each column is a feature.
+%Y: each row is an example's acutal class. There is only 1 column. In
+%ytrain, the value is either 1 or 2.
+%Loop through all training examples.
+for i = 1:m
+    %Forwards propagation
+    X0 = [1; transpose( X(i, :) )];
 
+    S1 = transpose(W1) * X0;
+    
+    X1 = [1; sigmoid(S1)];
+
+    S2 = transpose(W1) * X1;
+
+    X2 = sigmoid(S2);
+    
+    %Backwards propagation
+    y_actual = zeros( size(X2, 1), 1 );
+    y_actual( y(i, 1) ) = 1;
+    delta2 = (X2 - y_single) .* dsigmoid(S2);
+end
 %%% 6. Take the updates and pack the output parameter vector
 grad = zeros(numel(weights),1);
 grad(1:total_weights_W1) = reshape(W1_update.', total_weights_W1, 1);
