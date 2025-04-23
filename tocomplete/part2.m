@@ -44,10 +44,13 @@ lambda = 0;
 
 %%% 7. Declare optimization settings
 %%% PLACE YOUR CODE HERE
+options = optimset('MaxIterations', N);
 
 %%% 8. Find optimal weights
 %%% PLACE YOUR CODE HERE
 %%% MAKE SURE THE OUTPUT WEIGHT PARAMETER VECTOR IS STORED IN A VARIABLE CALLED weights
+% Optimal weights calculated via fmincg
+weights = fmincg(@(t) costFunction_NN_reg(Xtrain, ytrain, lambda, input_neurons, hidden_neurons, output_neurons, t), initial_vec, options);
 
 %%% 9. Extract out the final weight matrices
 %%% DON'T CHANGE
@@ -56,6 +59,14 @@ W2 = reshape(weights(total_weights_W1+1:end), output_neurons, hidden_neurons + 1
 
 %%% 10. Compute predictions for training and testing data
 %%% PLACE YOUR CODE HERE
+predict_train = predict_class(forward_propagation(Xtrain, W1, W2));
+predict_test = predict_class(forward_propagation(Xtest, W1, W2));
 
 %%% 11. Compute classification accuracy for training and testing data
 %%% PLACE YOUR CODE HERE
+% Calculate means as percentages then display them in console
+train_accuracy = mean(double(predict_train == ytrain)) * 100; % Training accuracy computation
+fprintf('Training Accuracy: %.2f%%\n', train_accuracy); % Print in console for debugging purposes
+
+test_accuracy = mean(double(predict_test == ytest)) * 100; % Test accuracy computation
+fprintf('Testing Accuracy: %.2f%%\n', test_accuracy); % Print in console for debugging purposes
