@@ -129,7 +129,7 @@ for epoch = 1:k
 
         %%% Accumulate cost for this epoch
         %Formula that lab wants on page 7
-        costs(epoch) = (1 / (2 * m) ) * sqrt( (X2 - y_single)^2 );
+        costs(epoch) = costs(epoch) + (1 / (2 * m) ) * sqrt( (X2 - y_single)^2 );
         %cost = cost + ( -(y_single * log(X2) + (1 - y_single) * log(1 - X2)) );
     end
     
