@@ -114,7 +114,9 @@ for epoch = 1:k
         X2 = sigmoid(S2);                % scalar, final prediction
         
         %%% Compute error (output - predicted)
-        delta2 = X2 - y_single;          % scalar
+        %delta2 = X2 - y_single;          % scalar
+        %missing some of the formula
+        delta2 = (X2 - y_single) .* dsigmoid(S2);
         
         %%% Backpropagate error to hidden layer
         delta1 = (delta2 * W2(2:end)') .* dsigmoid(S1); % (1x2)
