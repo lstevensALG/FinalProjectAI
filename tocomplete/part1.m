@@ -59,8 +59,8 @@ alpha = 5;
 %looping an equal amount of times as epochs/iterations
 %for aa = 1:1:1
     %looping through each example in x (m is equal to num of rows in x)
-%    for ab = 1:1:m
-%        %Get 1 example
+%   for ab = 1:1:m
+        %Get 1 example
 %        X0 = X(ab, :);
         %Transpose the example. Instructions want this and in-class
         %functions sorta want this. Strange that forwards_propagation.m did
@@ -70,11 +70,29 @@ alpha = 5;
 %        X0 = [1; X0];
 %        disp(X0);
         %X0 Complete
-%    end
+%   end
 %end
 
-%%% 8. Implement Stochastic Gradient Descent
-%%% PLACE YOUR CODE HERE
+% To compute for the error in the hidden layer, the formula is:
+% sigma^1 = (sigma^2 * Wno_bias^(2)) * g'(z^1)
+% g'(z^1) is the derivative of the activation function or sigmoid
+% Wno_bias^(2) is W2, first row removed (bias weight)
+% Why use element-wise multiplication? Each node in the hidden layer has its own
+% activation derivative, and backpropagated errors must be accounted for.
+% For example: 
+% delta3 = [0.1 0.4];       % Output layer error
+% W2     = [0.5 0.3;        % W2: (hidden+1) x output
+%          0.6 0.2;
+%          0.1 0.9];       % 3 hidden neurons + bias
+% z2 = [0.7 1.1 0.2];       % Pre-activation input into hidden layer
+% Then:
+% delta2 = (delta3 * W2(2:end,:)') .* dsigmoid(z2);
+% Where delta3 * W2(2:end,:)' = total error signal backpropagated into each
+% hidden neuron
+% dsigmoid(z2) = sensitivity of each neuron at the time of activation
+% .* element-wise combines both the backpropagated error scaled by the
+% activity of the hidden neurons
+% delta1 tells each hidden neuron how much correction is needed
 for epoch = 1:k
     cost = 0;
     
@@ -84,7 +102,7 @@ for epoch = 1:k
     y = y(shuffle, :);
     
     for idx = 1:m
-        %%% Forward propagation for each matrix 
+        %%% Forward propagation for each example 
         x_single = X(idx, :);            % (1x2)
         y_single = y(idx);               % scalar (1x1)
         
