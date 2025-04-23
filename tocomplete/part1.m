@@ -17,7 +17,7 @@ input_neurons = 2;
 
 %%% Number of hidden layer neurons
 %%% This you can change
-hidden_neurons = 2;
+hidden_neurons = 8;
 
 %%% Number of output layer neurons
 %%% DON'T CHANGE
