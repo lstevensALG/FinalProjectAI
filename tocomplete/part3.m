@@ -24,3 +24,6 @@ gscatter(X(:,1), X(:,2), y, 'rb', 'xo');
 contour(X1, X2, reshape(decision_values, size(X1)), [0,0], 'k');
 title('Non-linear SVM XOR Decision Boundary');
 legend('Class 1', 'Class 0', 'Decision Boundary');
+
+% might need to be changed a bit - wasn't sure if i formatted this
+% correctly
