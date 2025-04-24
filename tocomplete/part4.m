@@ -17,8 +17,8 @@ n = 4; % Total number of classes
 %%% PLACE YOUR CODE HERE
 svm_classifiers = cell(n,1);           % Create a cell array to hold 4 individual SVM classifiers
 for i = 1:n
-    y_binary = (ytrain == i);           % Convert labels into binary (1 for class i, 0 otherwise)
-    svm_classifiers{i} = fitcsvm(Xtrain, y_binary, ... % Train a binary SVM for class i vs all others
+    Ybinary = (Ytrain == i);           % Convert labels into binary (1 for class i, 0 otherwise)
+    svm_classifiers{i} = fitcsvm(Xtrain, Ybinary, ... % Train a binary SVM for class i vs all others
                       'KernelFunction', 'rbf', ... % Use Gaussian (RBF) kernel
                       'KernelScale', 'auto', ...   % Let MATLAB pick the kernel scale
                       'ClassNames', [false true]); % Define class labels explicitly
@@ -43,8 +43,8 @@ pred_train = predict_class(scores_train); % Choose the class with the highest sc
 pred_test = predict_class(scores_test);   % Do the same for testing set
 
 
-accuracy_train = mean(pred_train == ytrain) * 100; % Percent correct predictions for training set
+accuracy_train = mean(pred_train == Ytrain) * 100; % Percent correct predictions for training set
 fprintf('Multi-class SVM Training Accuracy: %.2f%%\n', accuracy_train); % Display training accuracy
 
-accuracy_test = mean(pred_test == ytest) * 100;    % Percent correct predictions for testing set
+accuracy_test = mean(pred_test == Ytest) * 100;    % Percent correct predictions for testing set
 fprintf('Multi-class SVM Testing Accuracy: %.2f%%\n', accuracy_test);   % Display testing accuracy
