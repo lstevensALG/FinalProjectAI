@@ -44,6 +44,30 @@ W2_update = zeros(size(W2));
 
 %%% 5. Compute total cost and gradient update matrices
 %%% PLACE YOUR CODE HERE
+X_bias = [ones(m, 1), X]; %  Add bias term
+
+% Forward Propagation
+z2 = X_bias * W1;
+a2 = [ones(m, 1), sigmoid(z2)];
+z3 = a2 * W2;
+a3 = sigmoid(z3); % Final output (m x output_neurons)
+
+% Convert labels to binary matrix form for multi-class
+y_matrix = eye(output_neurons);
+y_matrix = y_matrix(y, :);
+
+% Compute regularized cost
+J_unreg = (1/m) * sum(sum(-y_matrix.*log(a3)-(1-y_matrix).*log(1-a3)));
+regularization = (lambda/(2*m)) * (sum(sum(W1(2:end,:).^2)) + sum(sum(W2(2:end,:).^2)));
+cost_val = J_unreg + regularization;
+
+% Backpropagation
+delta3 = a3 - y_matrix;
+delta2 = (delta3 * W2(:, 2:end)).*dsigmoid(z2);
+
+% Update weights
+W2_update = (1/m) * (a2' * delta3) + (lambda/m)*[zeros(1,size(W2,2)); W2(2:end,:)];
+W1_update = (1/m) * (X_bias' * delta2) + (lambda/m)*[zeros(1,size(W1,2)); W1(2:end,:)];
 
 %%% 6. Take the updates and pack the output parameter vector
 grad = zeros(numel(weights),1);
