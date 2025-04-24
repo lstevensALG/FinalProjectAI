@@ -44,30 +44,45 @@ W2_update = zeros(size(W2));
 
 %%% 5. Compute total cost and gradient update matrices
 %%% PLACE YOUR CODE HERE
-X_bias = [ones(m, 1), X]; %  Add bias term
+%X: each row is an example. Each column is a feature.
+%Y: each row is an example's acutal class. There is only 1 column. In
+%ytrain, the value is either 1 or 2.
+%Loop through all training examples.
+for i = 1:m
+    %Forwards propagation
+    X0 = [1; transpose( X(i, :) )];
 
-% Forward Propagation
-z2 = X_bias * W1;
-a2 = [ones(m, 1), sigmoid(z2)];
-z3 = a2 * W2;
-a3 = sigmoid(z3); % Final output (m x output_neurons)
+    S1 = transpose(W1) * X0;
+    
+    X1 = [1; sigmoid(S1)];
 
-% Convert labels to binary matrix form for multi-class
-y_matrix = eye(output_neurons);
-y_matrix = y_matrix(y, :);
+    S2 = transpose(W2) * X1;
 
-% Compute regularized cost
-J_unreg = (1/m) * sum(sum(-y_matrix.*log(a3)-(1-y_matrix).*log(1-a3)));
-regularization = (lambda/(2*m)) * (sum(sum(W1(2:end,:).^2)) + sum(sum(W2(2:end,:).^2)));
-cost_val = J_unreg + regularization;
+    X2 = sigmoid(S2);
+    
+    %Backwards propagation
+    y_actual = zeros( size(X2, 1), 1 );         %X2 has multiple rows, this is a zero array to match it
+    y_actual( y(i, 1) ) = 1;                    %Assigning 1 to the position of the class the example is supposed to predict
+    
+    delta2 = (X2 - y_actual) .* dsigmoid(S2);
+    delta1 = dsigmoid(S1) .* ( W2(2:end, :) * delta2 );
+    
+    grad_W1 = X0 * transpose( delta1 );
+    grad_W2 = X1 * transpose( delta2 );
 
-% Backpropagation
-delta3 = a3 - y_matrix;
-delta2 = (delta3 * W2(:, 2:end)).*dsigmoid(z2);
+    %Accumulating weight error gradient
+    W1_update = W1_update + ( 1 / m ) * grad_W1;
+    W2_update = W2_update + ( 1 / m ) * grad_W2;
 
-% Update weights
-W2_update = (1/m) * (a2' * delta3) + (lambda/m)*[zeros(1,size(W2,2)); W2(2:end,:)];
-W1_update = (1/m) * (X_bias' * delta2) + (lambda/m)*[zeros(1,size(W1,2)); W1(2:end,:)];
+    %Accumulating cost
+    cost_val = cost_val + ( 1 / 2 * m ) * norm(X2 - y_actual) ^ 2;
+end
+%Regularizing weight gradient
+W1_update = W1_update + ( lambda / m ) * [ zeros( 1, size(W1, 2) ); W1(2:end, :) ];
+W2_update = W2_update + ( lambda / m ) * [ zeros( 1, size(W2, 2) ); W2(2:end, :) ];
+%Regularizing cost
+%I barely understand what I'm doing in this line lmao
+cost_val = cost_val + ( lambda / 2 * m ) * (sum(sum(W1(2:end, :) .^ 2)) + sum(sum(W2(2:end, :) .^ 2)));
 
 %%% 6. Take the updates and pack the output parameter vector
 grad = zeros(numel(weights),1);
