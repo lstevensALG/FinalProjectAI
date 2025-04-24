@@ -13,7 +13,7 @@ load lab3cardata.mat;
 input_neurons = 6;
 
 %%% This we can change
-hidden_neurons = 4;
+hidden_neurons = 10;
 
 %%% DON'T CHANGE
 output_neurons = 4;
@@ -50,7 +50,7 @@ options = optimset('MaxIter', N);
 %%% PLACE YOUR CODE HERE
 %%% MAKE SURE THE OUTPUT WEIGHT PARAMETER VECTOR IS STORED IN A VARIABLE CALLED weights
 % Optimal weights calculated via fmincg
-weights = fmincg(@(t) costFunction_NN_reg(Xtrain, Ytrain, lambda, input_neurons, hidden_neurons, output_neurons, t), initial_vec, options);
+weights = fmincg(@(t) costFunction_NN_reg(Xtrain, Ytrain, lambda, input_neurons, hidden_neurons, output_neurons, t), initial_vec, options, true);
 
 %%% 9. Extract out the final weight matrices
 %%% DON'T CHANGE
