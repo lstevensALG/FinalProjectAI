@@ -56,18 +56,34 @@ for i = 1:m
     
     X1 = [1; sigmoid(S1)];
 
-    S2 = transpose(W1) * X1;
+    S2 = transpose(W2) * X1;
 
     X2 = sigmoid(S2);
     
     %Backwards propagation
     y_actual = zeros( size(X2, 1), 1 );         %X2 has multiple rows, this is a zero array to match it
     y_actual( y(i, 1) ) = 1;                    %Assigning 1 to the position of the class the example is supposed to predict
-    delta2 = (X2 - y_actual) .* dsigmoid(S2);
-    delta1 = dsigmoid(S1) .* ( W2(2:end) * delta2);
-
     
+    delta2 = (X2 - y_actual) .* dsigmoid(S2);
+    delta1 = dsigmoid(S1) .* ( W2(2:end, :) * delta2 );
+    
+    grad_W1 = X0 * transpose( delta1 );
+    grad_W2 = X1 * transpose( delta2 );
+
+    %Accumulating weight error gradient
+    W1_update = W1_update + ( 1 / m ) * grad_W1;
+    W2_update = W2_update + ( 1 / m ) * grad_W2;
+
+    %Accumulating cost
+    cost_val = cost_val + ( 1 / 2 * m ) * norm(X2 - y_actual) ^ 2;
 end
+%Regularizing weight gradient
+W1_update = W1_update + ( lambda / m ) * [ zeros( 1, size(W1, 2) ); W1(2:end, :) ];
+W2_update = W2_update + ( lambda / m ) * [ zeros( 1, size(W2, 2) ); W2(2:end, :) ];
+%Regularizing cost
+%I barely understand what I'm doing in this line lmao
+cost_val = cost_val + ( lambda / 2 * m ) * (sum(sum(W1(2:end, :) .^ 2)) + sum(sum(W2(2:end, :) .^ 2)));
+
 %%% 6. Take the updates and pack the output parameter vector
 grad = zeros(numel(weights),1);
 grad(1:total_weights_W1) = reshape(W1_update.', total_weights_W1, 1);
