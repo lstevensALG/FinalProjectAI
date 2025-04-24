@@ -31,8 +31,8 @@ end
 scores_train = zeros(mTrain, n);        % Preallocate score matrix for training
 scores_test = zeros(mTest, n);          % Preallocate score matrix for testing
 for i = 1:n
-    [~, score_tr] = predict(svms{i}, Xtrain); % Get scores for training set
-    [~, score_te] = predict(svms{i}, Xtest);  % Get scores for testing set
+    [~, score_tr] = predict(svm_classifiers{i}, Xtrain); % Get scores for training set
+    [~, score_te] = predict(svm_classifiers{i}, Xtest);  % Get scores for testing set
     scores_train(:,i) = score_tr(:,2);        % Keep only the positive class score
     scores_test(:,i) = score_te(:,2);         % Do the same for test set
 end
