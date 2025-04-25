@@ -127,8 +127,11 @@ for epoch = 1:k
         W1 = W1 - alpha * grad_W1;       % (3x2)
         W2 = W2 - alpha * grad_W2;       % (3x1)
 
-        %%% Accumulate cost for this epoch
-        cost = cost + ( -(y_single * log(X2) + (1 - y_single) * log(1 - X2)) );
+        %%% Accumulate cost for this epoch (using log)
+        %cost = cost + ( -(y_single * log(X2) + (1 - y_single) * log(1 - X2)) ); 
+
+        %%% Accumulate cost for this epoch (squared error)
+        cost = cost + 0.5 * (X2 - y_single)^2;  % Squared error per example
     end
     
     % Average cost per example this epoch
