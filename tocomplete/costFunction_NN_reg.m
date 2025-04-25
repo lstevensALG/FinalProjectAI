@@ -74,8 +74,11 @@ for i = 1:m
     W1_update = W1_update + ( 1 / m ) * grad_W1;
     W2_update = W2_update + ( 1 / m ) * grad_W2;
 
-    %Accumulating cost
-    cost_val = cost_val + ( 1 / 2 * m ) * norm(X2 - y_actual) ^ 2;
+    % Accumulating cost
+    % cost_val = cost_val + ( 1 / 2 * m ) * norm(X2 - y_actual) ^ 2;
+    
+    % Accumulating squared error cost (better formatting)
+    cost_val = cost_val + (1 / (2 * m)) * norm(X2 - y_actual)^2;
 end
 %Regularizing weight gradient
 W1_update = W1_update + ( lambda / m ) * [ zeros( 1, size(W1, 2) ); W1(2:end, :) ];
