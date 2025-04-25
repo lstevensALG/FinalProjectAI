@@ -82,7 +82,10 @@ W1_update = W1_update + ( lambda / m ) * [ zeros( 1, size(W1, 2) ); W1(2:end, :)
 W2_update = W2_update + ( lambda / m ) * [ zeros( 1, size(W2, 2) ); W2(2:end, :) ];
 %Regularizing cost
 %I barely understand what I'm doing in this line lmao
-cost_val = cost_val + ( lambda / 2 * m ) * (sum(sum(W1(2:end, :) .^ 2)) + sum(sum(W2(2:end, :) .^ 2)));
+%cost_val = cost_val + ( lambda / 2 * m ) * (sum(sum(W1(2:end, :) .^ 2)) + sum(sum(W2(2:end, :) .^ 2)));
+
+% Regularizing cost (corrected scaling)
+cost_val = cost_val + (lambda / (2 * m)) * (sum(sum(W1(2:end, :) .^ 2)) + sum(sum(W2(2:end, :) .^ 2)));
 
 %%% 6. Take the updates and pack the output parameter vector
 grad = zeros(numel(weights),1);
