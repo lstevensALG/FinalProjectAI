@@ -44,7 +44,7 @@ lambda = 0;
 
 %%% 7. Declare optimization settings
 %%% PLACE YOUR CODE HERE
-options = optimset('MaxIter', N);
+options = optimset('MaxIter', N, 'GradObj', 'on');  % Enable gradients
 
 %%% 8. Find optimal weights
 %%% PLACE YOUR CODE HERE
